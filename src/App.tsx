@@ -16,19 +16,29 @@ const weightLossSlides = [
 ]
 
 export default function App() {
+  const [isPreviewOn, setIsPreviewOn] = useState(false)
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
 
-  const changeSLide = (index: number) => {
+  const changeSlide = (index: number) => {
     setCurrentSlideIndex(index)
+  }
+
+  const togglePreview = () => {
+    setIsPreviewOn(state => !state)
   }
 
   return (
     <>
-      <Slides currentSlideIndex={currentSlideIndex}>{weightLossSlides}</Slides>
+      <Slides isPreviewOn={isPreviewOn} currentSlideIndex={currentSlideIndex}>
+        {weightLossSlides}
+      </Slides>
+
       <Controls
+        isPreviewOn={isPreviewOn}
         currentSlideIndex={currentSlideIndex}
         numberOfSlides={weightLossSlides.length}
-        onChange={changeSLide}
+        onSlideChange={changeSlide}
+        onPreviewChange={togglePreview}
       />
     </>
   )

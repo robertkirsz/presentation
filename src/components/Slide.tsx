@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import type { ReactNode, CSSProperties } from 'react'
 
 type Props = {
@@ -7,6 +7,7 @@ type Props = {
   isPast?: boolean
   enter?: 'top' | 'right' | 'bottom' | 'left'
   exit?: 'top' | 'right' | 'bottom' | 'left'
+  isPreviewOn?: boolean
   style?: CSSProperties
   children: ReactNode
 }
@@ -25,6 +26,7 @@ export default function Slide({
   isPast,
   enter = 'bottom',
   exit = 'top',
+  isPreviewOn = false,
   style,
   children,
 }: Props) {
@@ -32,21 +34,28 @@ export default function Slide({
     <Wrapper
       position={isPast ? getPosition(exit) : isNext ? getPosition(enter) : '0, 0'}
       isActive={isActive}
+      isPreviewOn={isPreviewOn}
       style={style}
     >
+      {isActive ? 'Active' : 'Non active'}
+      <br />
       {children}
     </Wrapper>
   )
 }
 
-const Wrapper = styled.div<{ position: string; isActive: boolean }>`
-  position: absolute;
-  top: 0;
-  left: 0;
+const Wrapper = styled.div<{ position: string; isActive: boolean; isPreviewOn: boolean }>`
+  ${props =>
+    !props.isPreviewOn &&
+    css`
+      position: absolute;
+      opacity: ${Number(props.isActive)};
+      transform: translate(${props.position});
+      height: 100%;
+      top: 0;
+      left: 0;
+      transition: opacity 0.6s, transform 0.4s;
+    `}
+
   width: 100%;
-  height: 100%;
-  overflow: hidden;
-  opacity: ${props => Number(props.isActive)};
-  transform: translate(${props => props.position});
-  transition: opacity 0.6s, transform 0.4s;
 `

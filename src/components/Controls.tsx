@@ -1,24 +1,33 @@
 import styled from 'styled-components'
 
 type Props = {
+  isPreviewOn: boolean
   currentSlideIndex: number
   numberOfSlides: number
-  onChange: (index: number) => void
+  onPreviewChange: () => void
+  onSlideChange: (index: number) => void
 }
 
-export default function Controls({ currentSlideIndex, numberOfSlides, onChange }: Props) {
+export default function Controls({
+  isPreviewOn,
+  currentSlideIndex,
+  numberOfSlides,
+  onPreviewChange,
+  onSlideChange,
+}: Props) {
   const goPrev = () => {
-    if (currentSlideIndex !== 0) onChange(currentSlideIndex - 1)
+    if (currentSlideIndex !== 0) onSlideChange(currentSlideIndex - 1)
   }
 
   const goNext = () => {
-    if (currentSlideIndex !== numberOfSlides - 1) onChange(currentSlideIndex + 1)
+    if (currentSlideIndex !== numberOfSlides - 1) onSlideChange(currentSlideIndex + 1)
   }
 
   return (
     <Wrapper>
       <button onClick={goPrev}>Prev</button>
       <button onClick={goNext}>Next</button>
+      <button onClick={onPreviewChange}>Preview {isPreviewOn ? 'off' : 'on'}</button>
     </Wrapper>
   )
 }
